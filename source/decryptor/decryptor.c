@@ -865,15 +865,15 @@ u32 TwlNandPadgen()
 
 u32 FirmPadgen()
 {
-    u32 size_mb = (partitions[3].size + (1024 * 1024) - 1) / (1024 * 1024);
-    Debug("Creating FIRM0 xorpad. Size (MB): %u", size_mb);
+    u32 size_mb = (partitions[3].size + partitions[4].size + (1024 * 1024) - 1) / (1024 * 1024);
+    Debug("Creating FIRM0FIRM1 xorpad. Size (MB): %u", size_mb);
     Debug("Filename: firm0.xorpad");
 
     PadInfo padInfo = {
         .keyslot = partitions[3].keyslot,
         .setKeyY = 0,
         .size_mb = size_mb,
-        .filename = "firm0.xorpad",
+        .filename = "firm0firm1.xorpad",
         .mode = AES_CNT_CTRNAND_MODE };
     if (GetNandCtr(padInfo.CTR, partitions[3].offset) != 0)
         return 1;
