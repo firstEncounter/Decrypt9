@@ -133,8 +133,7 @@ brahma: bootstrap
 	@cp $(TOPDIR)/$(LOADER)/output/$(OUTPUT_N).3dsx $(OUTPUT).3dsx
 	@cp $(TOPDIR)/$(LOADER)/output/$(OUTPUT_N).smdh $(OUTPUT).smdh
 
-cakehax: $(OUTPUT_D)
-	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
+cakehax: common
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile EXEC_METHOD=GATEWAY
 	@make dir_out=$(OUTPUT_D) name=$(TARGET).dat -C CakeHax bigpayload
 	dd if=$(OUTPUT).bin of=$(OUTPUT).dat bs=512 seek=160
