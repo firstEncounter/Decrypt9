@@ -118,7 +118,7 @@ void ShowProgress(u32 current, u32 total)
         DrawStringF(SCREEN_WIDTH - 40, SCREEN_HEIGHT - 20, FONT_COLOR, BG_COLOR, "    ");
 }
 
-void DrawSplash(char* splash_file, u32 use_top_screen) {
+void DrawSplash(const char* splash_file, u32 use_top_screen) {
     char path[256];
     
     snprintf(path, 256, "/3ds/%s/UI/%s", APP_TITLE, splash_file);
@@ -137,9 +137,12 @@ void DrawSplash(char* splash_file, u32 use_top_screen) {
     FileClose();
 }
 
-void DrawSplashLogo()
+void DrawSplashLogo(const char* msg)
 {
     DrawSplash("menuTOP.bin", 1); // top screen
+    if (msg != NULL)
+        // adapt this and delete this comment
+        DrawStringF(50, 200, FONT_COLOR, BG_M_COLOR, "%s", msg);
     #ifdef WORKDIR
     DrawStringF(50, 210, FONT_COLOR, BG_M_COLOR, "Working directory: %s", WORKDIR);
     #endif
