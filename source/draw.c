@@ -14,7 +14,7 @@
 #define BG_COLOR   (RGB(0x00, 0x00, 0x00))
 #define BG_M_COLOR (RGB(0x42, 0x22, 0x58))
 #define FONT_COLOR (RGB(0xFF, 0xFF, 0xFF))
-
+#define FONT_M_COLOR (RGB(0x26, 0x60, 0x95))
 
 void ClearScreen(u8* screen, int color)
 {
@@ -141,10 +141,9 @@ void DrawSplashLogo(const char* msg)
 {
     DrawSplash("menuTOP.bin", 1); // top screen
     if (msg != NULL)
-        // adapt this and delete this comment
-        DrawStringF(50, 200, FONT_COLOR, BG_M_COLOR, "%s", msg);
+    DrawStringF(20, 162, FONT_M_COLOR, BG_M_COLOR, "%s", msg);
     #ifdef WORKDIR
-    DrawStringF(50, 210, FONT_COLOR, BG_M_COLOR, "Working directory: %s", WORKDIR);
+    DrawStringF(50, 210, FONT_M_COLOR, BG_M_COLOR, "Working directory: %s", WORKDIR);
     #endif
-    DrawStringF(50, 220, FONT_COLOR, BG_M_COLOR, "Remaining SD storage space: %llu MiB", RemainingStorageSpace() / 1024 / 1024);
+    DrawStringF(50, 220, FONT_M_COLOR, BG_M_COLOR, "Remaining SD storage space: %llu MiB", RemainingStorageSpace() / 1024 / 1024);
 }
