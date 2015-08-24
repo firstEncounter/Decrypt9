@@ -28,6 +28,7 @@
     
 // customizations
 #define DANGER_ZONE
+#define NAND_SWITCH
 #define WORKDIR "/Decrypt9"
 
 inline char* strupper(const char* str) {

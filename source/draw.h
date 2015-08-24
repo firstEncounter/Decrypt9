@@ -52,5 +52,5 @@ void Debug(const char *format, ...);
 
 void ShowProgress(u32 current, u32 total);
 
-void DrawSplash(char* splash_file, u32 use_top_screen);
-void DrawSplashLogo();
+void DrawSplash(const char* splash_file, u32 use_top_screen);
+void DrawSplashLogo(const char* msg);

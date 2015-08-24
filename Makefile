@@ -55,8 +55,6 @@ ifeq ($(EXEC_METHOD),GATEWAY)
 	LDFLAGS += --specs=../gateway.specs
 else ifeq ($(EXEC_METHOD),BOOTSTRAP)
 	LDFLAGS += --specs=../bootstrap.specs
-else ifeq ($(EXEC_METHOD),BRAHMA)
-	LDFLAGS += --specs=../bootstrap.specs
 endif
 
 LIBS	:=
@@ -111,22 +109,21 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: $(BUILD) clean all gateway bootstrap brahma release
+.PHONY: common clean all gateway bootstrap brahma cakehax release
 
 #---------------------------------------------------------------------------------
-all: $(OUTPUT_D) cakehax
+all: cakehax
 
-$(OUTPUT_D):
-	@[ -d $@ ] || mkdir -p $@
-
-gateway: $(OUTPUT_D)
+common:
+	@[ -d $(OUTPUT_D) ] || mkdir -p $(OUTPUT_D)
 	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
+
+gateway: common
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile EXEC_METHOD=GATEWAY
-	cp tools/LauncherTemplate.dat $(OUTPUT_D)/Launcher.dat
+	cp resources/LauncherTemplate.dat $(OUTPUT_D)/Launcher.dat
 	dd if=$(OUTPUT).bin of=$(OUTPUT_D)/Launcher.dat bs=1497296 seek=1 conv=notrunc
 
-bootstrap: $(OUTPUT_D)
-	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
+bootstrap: common
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile EXEC_METHOD=BOOTSTRAP
 	
 brahma: bootstrap
@@ -136,8 +133,7 @@ brahma: bootstrap
 	@cp $(TOPDIR)/$(LOADER)/output/$(OUTPUT_N).3dsx $(OUTPUT).3dsx
 	@cp $(TOPDIR)/$(LOADER)/output/$(OUTPUT_N).smdh $(OUTPUT).smdh
 
-cakehax: $(OUTPUT_D)
-	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
+cakehax: common
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile EXEC_METHOD=GATEWAY
 	@make dir_out=$(OUTPUT_D) name=$(TARGET).dat -C CakeHax bigpayload
 	dd if=$(OUTPUT).bin of=$(OUTPUT).dat bs=512 seek=160
