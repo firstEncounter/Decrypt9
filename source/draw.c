@@ -137,11 +137,9 @@ void DrawSplash(const char* splash_file, u32 use_top_screen) {
     FileClose();
 }
 
-void DrawSplashLogo(const char* msg)
+void DrawSplashLogo()
 {
     DrawSplash("menuTOP.bin", 1); // top screen
-    if (msg != NULL)
-    DrawStringF(20, 162, FONT_M_COLOR, BG_M_COLOR, "%s", msg);
     #ifdef WORKDIR
     DrawStringF(50, 210, FONT_M_COLOR, BG_M_COLOR, "Working directory: %s", WORKDIR);
     #endif

@@ -4,7 +4,6 @@
 #include "fs.h"
 #include "draw.h"
 #include "platform.h"
-#include "fatfs/sdmmc.h"
 #include "decryptor/decryptor.h"
 #include "decryptor/crypto.h"
 #include "decryptor/features.h"
@@ -16,12 +15,11 @@
 #define NAND_SECTOR_SIZE    0x200
 #define SECTORS_PER_READ    (BUFFER_MAX_SIZE / NAND_SECTOR_SIZE)
 
-#ifdef NAND_SWITCH
-    #define sdmmc_nand_readsectors  sdmmc_uni_readsectors
-    #define sdmmc_nand_writesectors sdmmc_uni_writesectors
-    int (*sdmmc_uni_readsectors)(u32, u32, u8*);
-    int (*sdmmc_uni_writesectors)(u32, u32, u8*);
+#ifdef USE_EMUNAND
+#define sdmmc_nand_readsectors  sdmmc_sdcard_readsectors
+#define sdmmc_nand_writesectors sdmmc_sdcard_writesectors
 #endif
+
 
 // From https://github.com/profi200/Project_CTR/blob/master/makerom/pki/prod.h#L19
 static const u8 common_keyy[6][16] = {
@@ -43,21 +41,6 @@ static PartitionInfo partitions[] = {
     { "CTRNAND", {0xE9, 0x00, 0x00, 0x43, 0x54, 0x52, 0x20, 0x20}, 0x0B95CA00, 0x2F3E3600, 0x4, AES_CNT_CTRNAND_MODE }, // O3DS
     { "CTRNAND", {0xE9, 0x00, 0x00, 0x43, 0x54, 0x52, 0x20, 0x20}, 0x0B95AE00, 0x41D2D200, 0x5, AES_CNT_CTRNAND_MODE }  // N3DS
 };
-
-#ifdef NAND_SWITCH
-u32 SetNand(bool use_emunand)
-{
-    if (use_emunand) {
-        sdmmc_uni_readsectors = sdmmc_sdcard_readsectors;
-        sdmmc_uni_writesectors = sdmmc_sdcard_writesectors;
-    } else {
-        sdmmc_uni_readsectors = sdmmc_nand_readsectors;
-        sdmmc_uni_writesectors = sdmmc_nand_writesectors;
-    }
-    
-    return 0;
-}
-#endif
 
 u32 DecryptBuffer(DecryptBufferInfo *info)
 {
@@ -886,7 +869,7 @@ u32 FirmPadgen()
 {
     u32 size_mb = (partitions[3].size + partitions[4].size + (1024 * 1024) - 1) / (1024 * 1024);
     Debug("Creating FIRM0FIRM1 xorpad. Size (MB): %u", size_mb);
-    Debug("Filename: firm0.xorpad");
+    Debug("Filename: firm0firm1.xorpad");
 
     PadInfo padInfo = {
         .keyslot = partitions[3].keyslot,
