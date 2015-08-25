@@ -7,12 +7,6 @@
 #define GFX_DONE        "done.bin"
 #define GFX_FAILED      "failed.bin"
 
-#ifdef NAND_SWITCH
-#define LOGO_MSG ((use_emunand) ? "Current NAND (X): EmuNAND" : "Current NAND (X): SysNAND")
-static bool use_emunand = false;
-#else
-#define LOGO_MSG NULL
-#endif
 
 void ProcessEntry(MenuEntry* entry)
 {
@@ -32,9 +26,6 @@ void ProcessEntry(MenuEntry* entry)
     
     DebugSetTitle(entry->longTitle);
     DebugClear();
-    #ifdef NAND_SWITCH
-    SetNand(use_emunand);
-    #endif
     if (entry->function() == 0) {
         Debug("%s: %s!", entry->shortTitle, "succeeded");
         DrawSplash(GFX_DONE, 0);
@@ -44,7 +35,7 @@ void ProcessEntry(MenuEntry* entry)
     }
     Debug("Press B to exit");
     while (!(InputWait() & BUTTON_B));
-    DrawSplashLogo(LOGO_MSG);
+    DrawSplashLogo();
 }
 
 u32 ProcessMenu(MenuInfo* info, u32 nMenus)
@@ -53,7 +44,7 @@ u32 ProcessMenu(MenuInfo* info, u32 nMenus)
     u32 menu_idx = 0;
     u32 pad_state;
     
-    DrawSplashLogo(LOGO_MSG);
+    DrawSplashLogo();
     
     while(true) {
         // draw bottom graphics
@@ -78,12 +69,6 @@ u32 ProcessMenu(MenuInfo* info, u32 nMenus)
         } else if (pad_state & BUTTON_A) { // process action
             ProcessEntry(&(menu->entries[menu_idx]));
         }
-        #ifdef NAND_SWITCH
-        else if (pad_state & BUTTON_X) { // switch NAND
-            use_emunand = !use_emunand;
-            DrawSplashLogo(LOGO_MSG);
-        }
-        #endif
     }
     
     return 0;

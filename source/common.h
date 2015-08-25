@@ -26,10 +26,10 @@
        __typeof__ (b) _b = (b); \
        _a < _b ? _a : _b; })
     
-// customizations
+// customizations - careful with DANGER_ZONE, USE_EMUNAND still needs testing
 #define DANGER_ZONE
-#define NAND_SWITCH
 #define WORKDIR "/Decrypt9"
+// #define USE_EMUNAND
 
 inline char* strupper(const char* str) {
     char* buffer = (char*)malloc(strlen(str) + 1);
