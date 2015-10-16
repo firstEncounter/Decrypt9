@@ -28,13 +28,29 @@
 	#error "Unknown execution method"
 #endif
 
-void ClearScreen(unsigned char *screen, int color);
-void ClearTopScreen();
-void DrawCharacter(unsigned char *screen, int character, int x, int y, int color, int bgcolor);
-void DrawString(unsigned char *screen, const char *str, int x, int y, int color, int bgcolor);
-void DrawStringF(int x, int y, const char *format, ...);
+//Colors Macros
+#define BLACK       RGB(0x00, 0x00, 0x00)
+#define WHITE       RGB(0xFF, 0xFF, 0xFF)
+#define RED         RGB(0xFF, 0x00, 0x00)
+#define GREEN       RGB(0x00, 0xFF, 0x00)
+#define BLUE        RGB(0xFF, 0x00, 0xFF)
+#define GREY        RGB(0x77, 0x77, 0x77)
+#define TRANSPARENT RGB(0xFF, 0x00, 0xFF)
+#define PURPLE      RGB(0x66, 0x00, 0xFF)
 
+void ClearScreen(unsigned char *screen, int color);
+void DrawPixel(int x, int y, int color, int screen);
+void DrawCharacter(unsigned char *screen, int character, int x, int y, int color, int bgcolor);
+
+void DrawString(unsigned char *screen, const char *str, int x, int y, int color, int bgcolor);
+void DrawStringF(int x, int y, int color, int bgcolor, const char *format, ...);
+
+void DebugInit();
+void DebugSetTitle(const char* title);
 void DebugClear();
 void Debug(const char *format, ...);
 
 void ShowProgress(u64 current, u64 total);
+
+void DrawSplash(const char* splash_file, u32 use_top_screen);
+void DrawSplashLogo();

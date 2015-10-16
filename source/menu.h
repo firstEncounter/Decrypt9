@@ -3,16 +3,17 @@
 #include "common.h"
 
 typedef struct {
-    char* name;
-    u32 (*function)(void);
-    u32 dangerous;
+    u32 isDangerous;
     u32 emunand;
+    char* longTitle;
+    char* shortTitle;
+    u32 (*function)(void);
+    char* gfxMenu;
 } MenuEntry;
 
 typedef struct {
     char* name;
-    u32 n_entries;
-    MenuEntry entries[8];
+    MenuEntry entries[10];
 } MenuInfo;
 
-void ProcessMenu(MenuInfo* info, u32 nMenus);
+u32 ProcessMenu(MenuInfo* info, u32 nEntries);

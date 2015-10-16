@@ -1,11 +1,6 @@
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "common.h"
 #include "draw.h"
 #include "fs.h"
-#include "hid.h"
 #include "menu.h"
 #include "i2c.h"
 #include "decryptor/features.h"
@@ -14,90 +9,59 @@
 MenuInfo menu[] =
 {
     {
-        "XORpad Options", 4,
+        "Decryption",
         {
-            { "NCCH Padgen", &NcchPadgen, 0, 0 },
-            { "SD Padgen", &SdPadgen, 0, 0 },
-            { "CTRNAND Padgen", &CtrNandPadgen, 0, 0 },
-            { "TWLNAND Padgen", &TwlNandPadgen, 0, 0 }
+            { 0, 0, "NCCH Xorpad Generator", "NCCH Padgen", NcchPadgen, "menu0.bin" },
+            { 0, 0, "SD Xorpad Generator", "SD Padgen", SdPadgen, "menu1.bin" },
+            { 0, 0, "CTR ROM Decryptor", "Decrypt ROM(s)", DecryptNcsdNcchBatch, "menu2.bin" },
+            { 0, 0, "Titlekey Decryptor (file)", "Titlekey Decryption", DecryptTitlekeysFile, "menu3.bin" },
+            { 0, 0, "Titlekey Decryptor (NAND)", "Titlekey Decryption", DecryptTitlekeysNand, "menu4.bin" },
+            { 0, 0, "Ticket Dumper", "Dump Ticket", DumpTicket, "menu5.bin" },
+            { 0, 0, "NAND FAT16 Xorpad Generator", "CTRNAND Padgen", CtrNandPadgen, "menu6.bin" },
+            { 0, 0, "TWLN FAT16 Xorpad Generator", "TWLN Padgen", TwlNandPadgen, "menu7.bin" },
+            { 0, 0, "FIRM0 Xorpad Generator", "FIRM Padgen", FirmPadgen, "menu8.bin" },
+            { 0, 0, NULL, NULL, NULL, NULL }
         }
     },
     {
-        "NAND Options", 8,
+        "NAND Options",
         {
-            { "NAND Backup", &DumpNand, 0, 0 },
-            { "All Partitions Dump", &DecryptAllNandPartitions, 0, 0 },
-            { "TWLNAND Partition Dump", &DecryptTwlNandPartition, 0, 0 },
-            { "CTRNAND Partition Dump", &DecryptCtrNandPartition, 0, 0 },
-            { "NAND Restore", &RestoreNand, 1, 0 },
-            { "All Partitions Inject", &InjectAllNandPartitions, 1, 0 },
-            { "TWLNAND Partition Inject", &InjectTwlNandPartition, 1, 0 },
-            { "CTRNAND Partition Inject", &InjectCtrNandPartition, 1, 0 }
-        }
-    },
-    {
-        "Title Options", 4,
-        {
-            { "Titlekey Decrypt (file)", &DecryptTitlekeysFile, 0, 0 },
-            { "Titlekey Decrypt (NAND)", &DecryptTitlekeysNand, 0, 0 },
-            { "Titlekey Decrypt (EMU)", &DecryptTitlekeysNand, 0, 1 },
-            { "NCCH/CIA Decryptor", &DecryptNcsdNcchBatch, 0, 0 }
-        }
-    },
-    {
-        "SysNAND File Options", 5,
-        {
-            { "Dump ticket.db", &DumpTicket, 0, 0 },
-            { "Dump movable.sed", &DumpMovableSed, 0, 0 },
-            { "Dump SecureInfo_A", &DumpSecureInfoA, 0, 0 },
-            { "Inject movable.sed", &InjectMovableSed, 1, 0 },
-            { "Inject SecureInfo_A", &InjectSecureInfoA, 1, 0 }
-        }
-    },
-    {
-        "EmuNAND File Options", 7,
-        {
-            { "Dump ticket_emu.db", &DumpTicket, 0, 1 },
-            { "Dump movable.sed", &DumpMovableSed, 0, 1 },
-            { "Dump SecureInfo_A", &DumpSecureInfoA, 0, 1 },
-            { "Dump seedsave.bin", &DumpSeedsave, 0, 1 },
-            { "Inject movable.sed", &InjectMovableSed, 1, 1 },
-            { "Inject SecureInfo_A", &InjectSecureInfoA, 1, 1 },
-            { "Update SeedDB", &UpdateSeedDb, 0, 1 }
-        }
-    },
-    #ifdef EXPERIMENTAL
-    {
-        "EmuNAND Options", 8,
-        {
-            { "EmuNAND Backup", &DumpNand, 0, 1 },
-            { "All Partitions Dump", &DecryptAllNandPartitions, 0, 1 },
-            { "TWLNAND Partition Dump", &DecryptTwlNandPartition, 0, 1 },
-            { "CTRNAND Partition Dump", &DecryptCtrNandPartition, 0, 1 },
-            { "EmuNAND Restore", &RestoreNand, 1, 1 },
-            { "All Partitions Inject", &InjectAllNandPartitions, 1, 1 },
-            { "TWLNAND Partition Inject", &InjectTwlNandPartition, 1, 1 },
-            { "CTRNAND Partition Inject", &InjectCtrNandPartition, 1, 1 }
+            { 0, 0, "NAND Backup", "Backup NAND", DumpNand, "menu9.bin" },
+            { 1, 0, "NAND Restore", "Restore NAND", RestoreNand, "menu10.bin" },
+            { 0, 0, "CTR Partitions Decryptor", "Decrypt CTR Partitions", DecryptCtrNandPartition, "menu11.bin" },
+            { 1, 0, "CTR Partitions Injector", "Inject CTR Partitions", InjectCtrNandPartition, "menu12.bin" },
+            { 0, 0, "TWL Partitions Decryptor", "Decrypt TWL Partitions", DecryptTwlNandPartition, "menu13.bin" },
+            { 1, 0, "TWL Partitions Injector", "Inject TWL Partitions", InjectTwlNandPartition, "menu14.bin" },
+            { 0, 0, NULL, NULL, NULL, NULL },
+            { 0, 0, NULL, NULL, NULL, NULL },
+            { 0, 0, NULL, NULL, NULL, NULL },
+            { 0, 0, NULL, NULL, NULL, NULL }
         }
     }
-    #endif
 };
-
-
+    
 void Reboot()
 {
     i2cWriteRegister(I2C_DEV_MCU, 0x20, 1 << 2);
     while(true);
 }
 
+void PowerOff()
+{
+    i2cWriteRegister(I2C_DEV_MCU, 0x20, 1 << 0);
+    while (true);
+}
+
 int main()
 {
-    DebugClear();
+    u32 result;
+    
     InitFS();
-
-    ProcessMenu(menu, sizeof(menu) / sizeof(MenuInfo));
+    DebugInit();
+    
+    result = ProcessMenu(menu, sizeof(menu) / sizeof(MenuEntry));
     
     DeinitFS();
-    Reboot();
+    (result == 1) ? Reboot() : PowerOff();
     return 0;
 }

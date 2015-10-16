@@ -35,7 +35,7 @@
     
 // customizations - careful with EXPERIMENTAL
 // #define EXPERIMENTAL
-// #define WORKDIR "/Decrypt9"
+#define WORKDIR "/Decrypt9"
 
 inline char* strupper(const char* str) {
     char* buffer = (char*)malloc(strlen(str) + 1);

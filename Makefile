@@ -16,7 +16,7 @@ include $(DEVKITARM)/ds_rules
 # INCLUDES is a list of directories containing header files
 # SPECS is the directory containing the important build and link files
 #---------------------------------------------------------------------------------
-export TARGET	:=	Decrypt9WIP
+export TARGET	:=	Decrypt9UI
 BUILD		:=	build
 SOURCES		:=	source source/fatfs source/decryptor source/abstraction
 DATA		:=	data
@@ -36,9 +36,7 @@ CFLAGS	:=	-g -Wall -O2\
 			-ffast-math -std=c99\
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DEXEC_$(EXEC_METHOD) -DARM9
-
-CFLAGS	+=	-DBUILD_NAME="\"$(TARGET) (`date +'%Y/%m/%d'`)\""
+CFLAGS	+=	$(INCLUDE) -DEXEC_$(EXEC_METHOD) -DARM9 -DAPP_TITLE=\"$(subst $(SPACE),,$(APP_TITLE))\"
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions
 
@@ -102,7 +100,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: common clean all gateway bootstrap cakehax brahma release
+.PHONY: common clean all gateway bootstrap brahma cakehax release
 
 #---------------------------------------------------------------------------------
 all: brahma
@@ -151,7 +149,7 @@ release:
 	@-cp $(OUTPUT).3dsx $(CURDIR)/release/$(TARGET)
 	@-cp $(OUTPUT).smdh $(CURDIR)/release/$(TARGET)
 	@cp $(CURDIR)/scripts/*.py $(CURDIR)/release/scripts
-	@mv --no-target-directory $(CURDIR)/release $(CURDIR)/$(TARGET)-d0k3-`date +'%Y%m%d-%H%M%S'`
+	@mv --no-target-directory $(CURDIR)/release $(CURDIR)/$(TARGET)-Shadowtrance-`date +'%Y%m%d-%H%M%S'`
 	
 #---------------------------------------------------------------------------------
 clean:
