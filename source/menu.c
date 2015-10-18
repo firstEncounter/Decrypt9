@@ -11,6 +11,8 @@
 
 void ProcessEntry(MenuEntry* entry)
 {
+    
+    DebugSetTitle(entry->longTitle); // set console title
     if (entry->isDangerous) { // warning graphic (if dangerous)
         u32 unlockSequence[] = { BUTTON_LEFT, BUTTON_RIGHT, BUTTON_DOWN, BUTTON_UP, BUTTON_A };
         u32 unlockLvlMax = sizeof(unlockSequence) / sizeof(u32);
@@ -38,14 +40,15 @@ void ProcessEntry(MenuEntry* entry)
                 unlockLvl = 0;
         }
         ShowProgress(0, 0);
-        if (unlockLvl < unlockLvlMax)
+        if (unlockLvl < unlockLvlMax) {
+            DrawSplashLogo();
             return;
+        }
     }
     
     // progress graphic
     DrawSplash(GFX_PROGRESS, 0);
     
-    DebugSetTitle(entry->longTitle);
     DebugClear();
     if ((SetNand(entry->emunand) == 0) && (entry->function() == 0)) {
         Debug("%s: %s!", entry->shortTitle, "succeeded");
@@ -76,16 +79,21 @@ u32 ProcessMenu(MenuInfo* info, u32 nMenus)
             return 1;
         } else if (pad_state & BUTTON_SELECT) {
             return 2;
-        } else if (pad_state & (BUTTON_DOWN) && menu_idx < 10) {
-            if (menu->entries[menu_idx + 1].function != NULL)
+        } else if (pad_state & BUTTON_DOWN) {
+            if ((menu_idx < 9 ) && (menu->entries[menu_idx + 1].function != NULL))
                 menu_idx++; // move down
-        } else if (pad_state & (BUTTON_UP) && menu_idx != 0) {
-            menu_idx--; // move up
+            else menu_idx = 0; // wrap around
+        } else if (pad_state & BUTTON_UP) {
+            if (menu_idx != 0)
+                menu_idx--; // move up
+            else { // wrap around
+                for (menu_idx = 9; menu->entries[menu_idx].function == NULL; menu_idx--);
+            }
         } else if (pad_state & (BUTTON_R1 | BUTTON_RIGHT)) {
-            if (++menu - info >= nMenus) menu--; // next menu
+            if (++menu - info >= nMenus) menu = info; // next menu
             else menu_idx = 0;
         } else if (pad_state & (BUTTON_L1 | BUTTON_LEFT)) {
-            if (--menu < info) menu = info; // previous menu
+            if (--menu < info) menu = info + nMenus - 1; // previous menu
             else menu_idx = 0;
         } else if (pad_state & BUTTON_A) { // process action
             ProcessEntry(&(menu->entries[menu_idx]));

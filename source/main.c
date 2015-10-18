@@ -59,7 +59,7 @@ int main()
     InitFS();
     DebugInit();
     
-    result = ProcessMenu(menu, sizeof(menu) / sizeof(MenuEntry));
+    result = ProcessMenu(menu, sizeof(menu) / sizeof(MenuInfo));
     
     DeinitFS();
     (result == 1) ? Reboot() : PowerOff();
