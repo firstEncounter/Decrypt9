@@ -131,6 +131,6 @@ Any questions or issues go here:
 
 https://gbatemp.net/threads/download-decrypt9-wip-3dsx-launcher-dat.388831/
 
-And hopefully me (Shadowtrance), or d0k3 can help. :)
+And hopefully me (Shadowtrance), or d0k3 can help. :D
 
 Enjoy! :)
