@@ -143,20 +143,24 @@ release:
 	@[ -d $(CURDIR)/release ] || mkdir -p $(CURDIR)/release
 	@[ -d $(CURDIR)/release/$(TARGET) ] || mkdir -p $(CURDIR)/release/$(TARGET)
 	@[ -d $(CURDIR)/release/scripts ] || mkdir -p $(CURDIR)/release/scripts
+	@[ -d $(CURDIR)/release/D9UI ] || mkdir -p $(CURDIR)/release/D9UI
 	@cp $(OUTPUT_D)/Launcher.dat $(CURDIR)/release
 	@cp $(OUTPUT).bin $(CURDIR)/release
 	@-cp $(OUTPUT).dat $(CURDIR)/release
 	@-cp $(OUTPUT).3dsx $(CURDIR)/release/$(TARGET)
 	@-cp $(OUTPUT).smdh $(CURDIR)/release/$(TARGET)
 	@cp $(CURDIR)/scripts/*.py $(CURDIR)/release/scripts
-	@mv --no-target-directory $(CURDIR)/release $(CURDIR)/$(TARGET)-Shadowtrance-`date +'%Y%m%d-%H%M%S'`
+	@cp $(CURDIR)/resources/release_files/*.nds $(CURDIR)/release
+	@cp $(CURDIR)/resources/release_files/*.txt $(CURDIR)/release
+	@cp $(CURDIR)/resources/release_files/D9UI/*.bin $(CURDIR)/release/D9UI
+	@7z a $(CURDIR)/release/$(TARGET)-Shadowtrance-`date +'%Y%m%d-%H%M%S'`.zip $(CURDIR)/release/*
 	
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
 	@-make clean --no-print-directory -C CakeHax
 	@-make clean --no-print-directory -C BrahmaLoader
-	@rm -fr $(BUILD) $(OUTPUT_D) $(TARGET)-d0k3-*
+	@rm -fr $(BUILD) $(OUTPUT_D) release $(TARGET)-Shadowtrance-*
 
 
 #---------------------------------------------------------------------------------
