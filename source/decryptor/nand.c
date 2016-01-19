@@ -547,6 +547,8 @@ u32 RestoreNand(u32 param)
     if (InputFileNameSelector(filename, "NAND.bin", NULL, NULL, 0, nand_size) != 0)
         return 1;
     
+    if (!DebugFileOpen(filename))
+        return 1;
     if (nand_size != FileGetSize()) {
         FileClose();
         Debug("NAND backup has the wrong size!");
