@@ -61,13 +61,15 @@ MenuInfo menu[] =
         }
     },
     {
-        "Game Decryptor Options", 8,
+        "Game Decryptor Options", 10,
         {
             { "NCCH/NCSD Decryptor",          &CryptGameFiles,        GC_NCCH_PROCESS },
             { "NCCH/NCSD Encryptor",          &CryptGameFiles,        GC_NCCH_PROCESS | GC_NCCH_ENCRYPT },
             { "CIA Decryptor (shallow)",      &CryptGameFiles,        GC_CIA_PROCESS },
             { "CIA Decryptor (deep)",         &CryptGameFiles,        GC_CIA_PROCESS | GC_CIA_DEEP },
             { "CIA Decryptor (CXI only)",     &CryptGameFiles,        GC_CIA_PROCESS | GC_CIA_DEEP | GC_CXI_ONLY },
+            { "CIA Encryptor (NCCH)",         &CryptGameFiles,        GC_CIA_PROCESS | GC_NCCH_ENCRYPT },
+            { "CIA Encryptor (CXI only)",     &CryptGameFiles,        GC_CIA_PROCESS | GC_NCCH_ENCRYPT | GC_CXI_ONLY },
             { "SD Decryptor/Encryptor",       &CryptSdFiles,          0 },
             { "SD Decryptor (SysNAND dir)",   &DecryptSdFilesDirect,  0 },
             { "SD Decryptor (EmuNAND dir)",   &DecryptSdFilesDirect,  N_EMUNAND }
@@ -119,7 +121,7 @@ MenuInfo menu[] =
         }
     },
     {
-        "File Dump... (SysNAND)", 9, // ID 4
+        "File Dump... (SysNAND)", 10, // ID 4
         {
             { "Dump ticket.db",               &DumpFile,             F_TICKET },
             { "Dump title.db",                &DumpFile,             F_TITLE },
@@ -129,11 +131,12 @@ MenuInfo menu[] =
             { "Dump LocalFriendCodeSeed_B",   &DumpFile,             F_LOCALFRIEND },
             { "Dump rand_seed",               &DumpFile,             F_RANDSEED },
             { "Dump movable.sed",             &DumpFile,             F_MOVABLE },
-            { "Dump updtsave.bin",            &DumpFile,             F_UPDATESAVE }
+            { "Dump nagsave.bin",             &DumpFile,             F_NAGSAVE },
+            { "Dump nnidsave.bin",            &DumpFile,             F_NNIDSAVE }
         }
     },
     {
-        "File Dump... (EmuNAND)", 10, // ID 5
+        "File Dump... (EmuNAND)", 11, // ID 5
         {
             { "Dump ticket.db",               &DumpFile,             N_EMUNAND | F_TICKET },
             { "Dump title.db",                &DumpFile,             N_EMUNAND | F_TITLE },
@@ -144,11 +147,12 @@ MenuInfo menu[] =
             { "Dump rand_seed",               &DumpFile,             N_EMUNAND | F_RANDSEED },
             { "Dump movable.sed",             &DumpFile,             N_EMUNAND | F_MOVABLE },
             { "Dump seedsave.bin",            &DumpFile,             N_EMUNAND | F_SEEDSAVE },
-            { "Dump updtsave.bin",            &DumpFile,             N_EMUNAND | F_UPDATESAVE }
+            { "Dump nagsave.bin",             &DumpFile,             N_EMUNAND | F_NAGSAVE },
+            { "Dump nnidsave.bin",            &DumpFile,             N_EMUNAND | F_NNIDSAVE }
         }
     },
     {
-        "File Inject... (SysNAND)", 9, // ID 6
+        "File Inject... (SysNAND)", 10, // ID 6
         {
             { "Inject ticket.db",             &InjectFile,           N_NANDWRITE | F_TICKET },
             { "Inject title.db",              &InjectFile,           N_NANDWRITE | F_TITLE },
@@ -158,11 +162,12 @@ MenuInfo menu[] =
             { "Inject LocalFriendCodeSeed_B", &InjectFile,           N_NANDWRITE | F_LOCALFRIEND },
             { "Inject rand_seed",             &InjectFile,           N_NANDWRITE | F_RANDSEED },
             { "Inject movable.sed",           &InjectFile,           N_NANDWRITE | F_MOVABLE },
-            { "Inject updtsave.bin",          &InjectFile,           N_NANDWRITE | F_UPDATESAVE }
+            { "Inject nagsave.bin",           &InjectFile,           N_NANDWRITE | F_NAGSAVE },
+            { "Inject nnidsave.bin",          &InjectFile,           N_NANDWRITE | F_NNIDSAVE }
         }
     },
     {
-        "File Inject... (EmuNAND)", 10, // ID 7
+        "File Inject... (EmuNAND)", 11, // ID 7
         {
             { "Inject ticket.db",             &InjectFile,           N_NANDWRITE | N_EMUNAND | F_TICKET },
             { "Inject title.db",              &InjectFile,           N_NANDWRITE | N_EMUNAND | F_TITLE },
@@ -173,7 +178,8 @@ MenuInfo menu[] =
             { "Inject rand_seed",             &InjectFile,           N_NANDWRITE | N_EMUNAND | F_RANDSEED },
             { "Inject movable.sed",           &InjectFile,           N_NANDWRITE | N_EMUNAND | F_MOVABLE },
             { "Inject seedsave.bin",          &InjectFile,           N_NANDWRITE | N_EMUNAND | F_SEEDSAVE },
-            { "Inject updtsave.bin",          &InjectFile,           N_NANDWRITE | N_EMUNAND | F_UPDATESAVE }
+            { "Inject nagsave.bin",           &InjectFile,           N_NANDWRITE | N_EMUNAND | F_NAGSAVE },
+            { "Inject nnidsave.bin",          &InjectFile,           N_NANDWRITE | N_EMUNAND | F_NNIDSAVE }
         }
     },
     {
