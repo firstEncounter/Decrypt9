@@ -29,7 +29,7 @@
 #define PRG_COLOR_BG   LOGO_COLOR_BG
 #define PRG_COLOR_FONT LOGO_COLOR_FONT
 #define PRG_START_X    20
-#define PRG_START_Y    10
+#define PRG_START_Y    210
 #define PRG_BARWIDTH   280 // must be multiple of 8
 
 #define STD_COLOR_BG   LOGO_COLOR_BG
