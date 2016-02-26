@@ -12,6 +12,8 @@
 #define P_FIRM1   (1<<4)
 #define P_CTRNAND (1<<5)
 
+#define PG_FORCESLOT4 (1<<0)
+
 // these three are not handled by the feature functions
 // they have to be handled by the menu system
 #define N_EMUNAND   (1<<29)

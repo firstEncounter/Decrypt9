@@ -863,6 +863,21 @@ u32 CryptNcch(const char* filename, u32 offset, u32 size, u64 seedId, u8* encryp
         if (ncch->size_romfs_hash > 0)
             ver_romfs = CheckHashFromFile(filename, offset + (ncch->offset_romfs * 0x200), ncch->size_romfs_hash * 0x200, ncch->hash_romfs);
         
+        if (ncch->size_exefs > 0) { // thorough exefs verification
+            u32 offset_byte = ncch->offset_exefs * 0x200;
+            if(!FileOpen(filename) || !FileRead(buffer, 0x200, offset + offset_byte))
+                ver_exefs = 1;
+            FileClose();
+            for (u32 i = 0; (i < 10) && (ver_exefs != 1); i++) {
+                u32 offset_exefs_file = offset_byte + getle32(buffer + (i*0x10) + 0x8) + 0x200;
+                u32 size_exefs_file = getle32(buffer + (i*0x10) + 0xC);
+                u8* hash_exefs_file = buffer + 0x200 - ((i+1)*0x20);
+                if (size_exefs_file == 0)
+                    break;
+                ver_exefs = CheckHashFromFile(filename, offset + offset_exefs_file, size_exefs_file, hash_exefs_file);
+            }
+        }
+        
         Debug("Verify ExHdr/ExeFS/RomFS: %s/%s/%s", status_str[ver_exthdr], status_str[ver_exefs], status_str[ver_romfs]);
         result = (((ver_exthdr | ver_exefs | ver_romfs) & 1) == 0) ? 0 : 1;
     }
