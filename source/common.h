@@ -39,7 +39,6 @@
     (((v) % (a)) ? ((v) + (a) - ((v) % (a))) : (v))
     
 // work files / directories
-#define GAME_DIR "/D9Game"
 #define WORK_DIR "/Decrypt9"
 #define LOG_FILE "Decrypt9.log"
 

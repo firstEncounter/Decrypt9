@@ -1,5 +1,3 @@
-#ifdef EXEC_BOOTSTRAP
-
 .section ".init"
 .global _start
 .extern main
@@ -102,5 +100,3 @@ _init:
 
     @ return control to FIRM
     ldr pc, arm9ep_backup
-
-#endif // EXEC_BOOTSTRAP
