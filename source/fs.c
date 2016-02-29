@@ -9,7 +9,7 @@ static DIR dir;
 
 bool InitFS()
 {
-#ifndef EXEC_GATEWAY
+#ifdef EXEC_BOOTSTRAP
     // TODO: Magic?
     *(u32*)0x10000020 = 0;
     *(u32*)0x10000020 = 0x340;

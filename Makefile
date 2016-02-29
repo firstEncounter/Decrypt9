@@ -54,6 +54,8 @@ ifeq ($(EXEC_METHOD),GATEWAY)
 	LDFLAGS += --specs=../gateway.specs
 else ifeq ($(EXEC_METHOD),BOOTSTRAP)
 	LDFLAGS += --specs=../bootstrap.specs
+else ifeq ($(EXEC_METHOD),A9LH)
+    LDFLAGS += --specs=../a9lh.specs
 endif
 
 LIBS	:=
@@ -108,7 +110,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: common clean all gateway bootstrap cakehax cakerop brahma release
+.PHONY: common clean all gateway bootstrap a9lh cakehax cakerop brahma release
 
 #---------------------------------------------------------------------------------
 all: brahma
@@ -127,6 +129,10 @@ gateway: common
 
 bootstrap: common
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile EXEC_METHOD=BOOTSTRAP
+
+a9lh: common
+	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile EXEC_METHOD=A9LH
+	@cp $(OUTPUT).bin $(OUTPUT_D)/arm9loaderhax.bin
 
 cakehax: submodules common
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile EXEC_METHOD=GATEWAY
@@ -151,6 +157,8 @@ release:
 	@make --no-print-directory gateway
 	@-make --no-print-directory cakerop
 	@rm -fr $(BUILD) $(OUTPUT).bin $(OUTPUT).elf $(CURDIR)/$(LOADER)/data
+	@make --no-print-directory a9lh
+	@rm -fr $(BUILD) $(OUTPUT).bin $(OUTPUT).elf $(CURDIR)/$(LOADER)/data
 	@-make --no-print-directory brahma
 	@[ -d $(RELEASE) ] || mkdir -p $(RELEASE)
 	@[ -d $(RELEASE)/$(TARGET) ] || mkdir -p $(RELEASE)/$(TARGET)
@@ -161,6 +169,7 @@ release:
 	@-cp $(OUTPUT).nds $(RELEASE)
 	@-cp $(OUTPUT).3dsx $(RELEASE)/$(TARGET)
 	@-cp $(OUTPUT).smdh $(RELEASE)/$(TARGET)
+	@-cp $(OUTPUT_D)/arm9loaderhax.bin $(RELEASE)
 	@cp $(CURDIR)/scripts/*.py $(RELEASE)/scripts
 	@cp $(CURDIR)/README.md $(RELEASE)
 	@-[ ! -n "$(strip $(THEME))" ] || (mkdir $(RELEASE)/$(THEME) && cp $(CURDIR)/resources/$(THEME)/*.bin $(RELEASE)/$(THEME))
